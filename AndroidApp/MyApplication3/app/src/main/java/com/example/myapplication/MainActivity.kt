@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -16,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import kotlinx.coroutines.awaitAll
 
 class MainActivity : AppCompatActivity() {
     private lateinit var volumeManager:VolumeManager;
@@ -106,14 +108,33 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun startOrStopRecording(view: View) {
+     fun startOrStopRecording(view: View) {
         UpdateButton();
 
-        cameraManager.startOrStopRecording { uri ->
-            if (uri == null) {
-                Toast.makeText(this, "Something went wrong while tryng to record the video", Toast.LENGTH_SHORT).show()
-            }
-        }
+
+         cameraManager.startOrStopRecording(
+             onVideoSaved = { uri ->
+                 if (uri == null) {
+                     Toast.makeText(this, "Something went wrong while trying to record the video", Toast.LENGTH_SHORT).show()
+                 }
+             },
+             onClassificationDone = { result ->
+                 val classificationResult = result
+                 // Now you can use the result
+                 Log.i("Classification Result","${classificationResult}");
+
+
+                 when (classificationResult) {
+                     1 -> pauseVideo();
+                     2 -> aheadVideo();
+                     3 -> behindVideo();
+                     4 -> raiseVolume();
+                     5 -> lowerVolume();
+                 }
+             }
+         )
+
+
     }
 
     fun UpdateButton(){
@@ -137,15 +158,15 @@ class MainActivity : AppCompatActivity() {
 
     //Neural Network applicable functions
 
-    fun pauseVideo(view: View) {
+    fun pauseVideo() {
         videoManager.togglePlayPause()
     }
 
-    fun aheadVideo(view: View) {
+    fun aheadVideo() {
         videoManager.seekForward()
     }
 
-    fun behindVideo(view: View) {
+    fun behindVideo() {
         videoManager.seekBackward()
     }
 
