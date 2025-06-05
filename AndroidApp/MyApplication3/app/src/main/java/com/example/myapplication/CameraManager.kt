@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Button
 import android.widget.Toast;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
@@ -34,7 +35,9 @@ class CameraManager(private val context: Context, private val previewView: Previ
 
             videoCapture = VideoCapture.withOutput(recorder)
 
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(lensFacing)
+                .build()
 
             try {
                 cameraProvider.unbindAll()
@@ -48,7 +51,6 @@ class CameraManager(private val context: Context, private val previewView: Previ
     }
 
     fun startOrStopRecording(onVideoSaved:(Uri?) ->Unit)
-
     {
         val videoCapture = videoCapture ?:return
 
@@ -95,5 +97,21 @@ class CameraManager(private val context: Context, private val previewView: Previ
                     }
                 }
         }
+    }
+
+
+
+    private var lensFacing = CameraSelector.LENS_FACING_BACK
+
+    fun FlipCamera(){
+            lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
+                CameraSelector.LENS_FACING_FRONT
+            } else {
+                CameraSelector.LENS_FACING_BACK
+            }
+
+            // Rebind all use cases with the new lensFacing
+            startCamera()
+
     }
 }

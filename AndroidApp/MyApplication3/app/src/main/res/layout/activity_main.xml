@@ -52,6 +52,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ImageButton
+        android:id="@+id/flipCamera"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="343dp"
+        android:layout_marginTop="160dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/flip_camera_icon"
+        android:onClick="onFlipCamera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <FrameLayout
         android:id="@+id/videoContainer"
         android:layout_width="match_parent"
@@ -63,7 +76,7 @@
             android:id="@+id/videoView"
             android:layout_width="match_parent"
             android:layout_height="290dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
     </FrameLayout>
 
 

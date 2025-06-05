@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var volumeHelper:VolumeHelper;
+    private lateinit var volumeManager:VolumeManager;
     private lateinit var cameraManager: CameraManager;
     private lateinit var videoManager: VideoManager;
 
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.READ_MEDIA_VIDEO
     )
     private val REQUEST_CODE_PERMISSIONS = 10
+
+    private var isRecording:Boolean=false;
 
     //set up
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        volumeHelper = VolumeHelper(applicationContext)
+        volumeManager = VolumeManager(applicationContext)
 
         cameraManager = CameraManager(this, findViewById(R.id.previewView))
 
@@ -104,12 +107,30 @@ class MainActivity : AppCompatActivity() {
 
 
     fun startOrStopRecording(view: View) {
+        UpdateButton();
 
         cameraManager.startOrStopRecording { uri ->
             if (uri == null) {
                 Toast.makeText(this, "Something went wrong while tryng to record the video", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun UpdateButton(){
+        val button: Button = findViewById(R.id.recordButton)
+        if(isRecording){
+            button.text = "Record";
+            isRecording=false;
+        } else {
+            button.text = "Stop Recording";
+            isRecording=true;
+        }
+    }
+
+
+
+    fun onFlipCamera(view: View){
+        cameraManager.FlipCamera();
     }
 
 
@@ -130,10 +151,10 @@ class MainActivity : AppCompatActivity() {
 
 
     fun lowerVolume(){
-        volumeHelper.lowerVolume();
+        volumeManager.lowerVolume();
     }
 
     fun raiseVolume(){
-        volumeHelper.raiseVolume();
+        volumeManager.raiseVolume();
     }
 }
