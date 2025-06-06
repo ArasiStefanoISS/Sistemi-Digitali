@@ -112,11 +112,7 @@ class CameraManager(private val context: Context, private val previewView: Previ
 
                                 Log.i("Result","Result: ${modelResult}")
 
-
                                 onClassificationDone(modelResult.indexOf(modelResult.maxOrNull()));
-
-
-
 
                             } else {
                                 Toast.makeText(context, "Error saving video: ${recordEvent.error}", Toast.LENGTH_SHORT).show()

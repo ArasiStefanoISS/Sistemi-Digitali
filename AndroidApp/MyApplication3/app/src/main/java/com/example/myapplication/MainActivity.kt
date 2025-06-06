@@ -125,11 +125,11 @@ class MainActivity : AppCompatActivity() {
 
 
                  when (classificationResult) {
-                     1 -> pauseVideo();
+                     1 -> behindVideo();
                      2 -> aheadVideo();
-                     3 -> behindVideo();
-                     4 -> raiseVolume();
-                     5 -> lowerVolume();
+                     3 -> pauseVideo();
+                     4 -> lowerVolume();
+                     5 -> raiseVolume();
                  }
              }
          )
