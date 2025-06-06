@@ -111,7 +111,6 @@ class MainActivity : AppCompatActivity() {
      fun startOrStopRecording(view: View) {
         UpdateButton();
 
-
          cameraManager.startOrStopRecording(
              onVideoSaved = { uri ->
                  if (uri == null) {
@@ -133,8 +132,6 @@ class MainActivity : AppCompatActivity() {
                  }
              }
          )
-
-
     }
 
     fun UpdateButton(){

@@ -26,7 +26,9 @@ import java.nio.ByteOrder
 class CameraManager(private val context: Context, private val previewView: PreviewView) {
     private var videoCapture:VideoCapture<Recorder>?=null;
     private var currentRecording:Recording?=null;
-    private val model = Model.newInstance(context)
+    private val model = Model.newInstance(context);
+
+    private var lensFacing = CameraSelector.LENS_FACING_BACK;
 
     fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
@@ -112,7 +114,7 @@ class CameraManager(private val context: Context, private val previewView: Previ
 
                                 Log.i("Result","Result: ${modelResult}")
 
-                                onClassificationDone(modelResult.indexOf(modelResult.maxOrNull()));
+                                onClassificationDone(modelResult.indexOf(modelResult.maxOrNull())+1);
 
                             } else {
                                 Toast.makeText(context, "Error saving video: ${recordEvent.error}", Toast.LENGTH_SHORT).show()
@@ -126,8 +128,6 @@ class CameraManager(private val context: Context, private val previewView: Previ
     }
 
 
-
-    private var lensFacing = CameraSelector.LENS_FACING_BACK
 
     fun FlipCamera(){
             lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
